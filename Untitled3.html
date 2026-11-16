@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bar & Lounge Cocktail Menu with ABV Guide</title>
+    <style>
+        body { background: #0f172a; color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; margin: 0; }
+        h1 { text-align: center; color: #fbbf24; margin-bottom: 5px; font-size: 1.8rem; }
+        p.sub { text-align: center; color: #94a3b8; margin-bottom: 25px; font-size: 0.9rem; }
+        .filters { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; }
+        .btn { padding: 8px 16px; background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+        .btn:hover, .btn.active { background: #f59e0b; color: #0f172a; border-color: #f59e0b; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+        .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+        .card h3 { margin: 0 0 8px 0; color: #f8fafc; font-size: 1.2rem; }
+        .spirit { display: inline-block; background: #334155; color: #fbbf24; font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; }
+        .ing { font-size: 0.85rem; color: #94a3b8; margin-bottom: 12px; }
+        .abv-box { background: #0f172a; padding: 8px 10px; border-radius: 6px; font-size: 0.8rem; margin-bottom: 12px; display: flex; justify-content: space-between; font-weight: 600; }
+        .flavors { font-size: 0.8rem; color: #38bdf8; margin-bottom: 10px; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #334155; padding-top: 10px; margin-top: auto; }
+        .price { font-size: 1.05rem; font-weight: bold; color: #fbbf24; }
+        .mocktail { font-size: 0.78rem; color: #34d399; }
+    </style>
+</head>
+<body>
+
+    <h1>Velvet & Oak Lounge</h1>
+    <p class="sub">Craft Cocktail Menu & Alcohol By Volume (ABV) Guide</p>
+
+    <div class="filters">
+        <button class="btn active" onclick="filterMenu('All', this)">All</button>
+        <button class="btn" onclick="filterMenu('Gin', this)">Gin</button>
+        <button class="btn" onclick="filterMenu('Vodka', this)">Vodka</button>
+        <button class="btn" onclick="filterMenu('Bourbon', this)">Bourbon</button>
+        <button class="btn" onclick="filterMenu('Rum', this)">Rum</button>
+        <button class="btn" onclick="filterMenu('Tequila', this)">Tequila</button>
+        <button class="btn" onclick="filterMenu('Mocktail', this)">Mocktails</button>
+    </div>
+
+    <div class="grid" id="menuGrid"></div>
+
+    <script>
+        const drinks = [
+            { name: "Smoked Old Fashioned", spirit: "Bourbon", abv: "32% (Heavy Hitter)", ing: "Bourbon, Bitters, Sugar, Smoke", flavor: "Smoky, Sweet, Bitter", price: "₹650", mock: "Zero-Proof Smoked Tea" },
+            { name: "Botanical Cucumber Fizz", spirit: "Gin", abv: "14% (Low ABV)", ing: "Gin, Cucumber Juice, Lime, Tonic", flavor: "Herbal, Sour, Crisp", price: "₹520", mock: "Cucumber Elderflower Cooler" },
+            { name: "Midnight Espresso Martini", spirit: "Vodka", abv: "21% (Classic)", ing: "Vodka, Espresso, Coffee Liqueur", flavor: "Sweet, Bitter, Rich", price: "₹580", mock: "Cold Brew Vanilla Shake" },
+            { name: "Spicy Jalapeño Margarita", spirit: "Tequila", abv: "23% (Classic)", ing: "Tequila, Lime, Agave, Jalapeño", flavor: "Sour, Spicy, Herbal", price: "₹600", mock: "Virgin Spicy Citrus Sparkler" },
+            { name: "Spiced Pineapple Daiquiri", spirit: "Rum", abv: "19% (Classic)", ing: "Dark Rum, Pineapple, Cinnamon", flavor: "Sweet, Sour, Fruity", price: "₹540", mock: "Roasted Pineapple Ginger Fizz" },
+            { name: "Hibiscus Berry Spritzer", spirit: "Mocktail", abv: "0% (Non-Alcoholic)", ing: "Hibiscus Infusion, Raspberries, Mint", flavor: "Sweet, Tangy, Floral", price: "₹350", mock: "100% Designated Driver Friendly" }
+        ];
+
+        function filterMenu(category, btn) {
+            document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const grid = document.getElementById('menuGrid');
+            grid.innerHTML = "";
+
+            const filtered = category === 'All' ? drinks : drinks.filter(d => d.spirit === category);
+
+            filtered.forEach(d => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div>
+                            <span class="spirit">${d.spirit}</span>
+                            <h3>${d.name}</h3>
+                            <div class="ing"><b>Ingredients:</b> ${d.ing}</div>
+                            <div class="abv-box">
+                                <span>ABV Level:</span>
+                                <span style="color: #fbbf24;">${d.abv}</span>
+                            </div>
+                            <div class="flavors"><b>Flavor:</b> ${d.flavor}</div>
+                        </div>
+                        <div>
+                            <div class="mocktail">🍹 Alt: ${d.mock}</div>
+                            <div class="price-row">
+                                <span class="price">${d.price}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Load all initially
+        filterMenu('All', document.querySelector('.btn'));
+    </script>
+</body>
+</html>
